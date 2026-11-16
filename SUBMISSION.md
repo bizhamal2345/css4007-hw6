@@ -63,22 +63,24 @@ $$
 
 The initial values are V0 = 0.
 
+
 ### 3. Handwritten Calculations
 
-The following photographs show my calculations
-for V1, V2, and the best actions.
+The following photographs show my handwritten
+calculations for V1, V2, and the best actions.
 
 **Page 1 — MDP and initial calculations**
 
-![Part A Page 1](<WhatsApp Image 2026-11-16 at 11.26.23 PM.jpg>)
+![Part A Page 1](<WhatsApp Image 2026-11-16 at 11.26.23 PM.jpeg>)
 
 **Page 2 — Value Iteration calculations**
 
-![Part A Page 2](<WhatsApp Image 2026-11-16 at 11.27.07 PM.jpg>)
+![Part A Page 2](<WhatsApp Image 2026-11-16 at 11.27.07 PM.jpeg>)
 
 **Page 3 — Final calculations and best actions**
 
-![Part A Page 3](<WhatsApp Image 2026-11-16 at 11.28.06 PM.jpg>)
+![Part A Page 3](<WhatsApp Image 2026-11-16 at 11.28.06 PM.jpeg>)
+
 
 ### 4. V2 Results
 
