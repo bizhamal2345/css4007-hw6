@@ -33,20 +33,79 @@ from `maps.json` and does not use FrozenLake's dynamics. Neither part requires a
 
 ## Part A — Paper calculations
 
-**Handwritten Part A scan:** [Add link to your own photo/scan here].
-This must have been committed before the code, as the instructions require.
 
-Reference V1 map from the supplied rules:
+### 1. MDP Definition
 
-```text
- -1   -1    10   G(0)
- -1    #    -1   H(0)
- -1   -1    -1    -1
-```
+I completed the Grid World calculations by hand.
 
-V2 checkpoints are (1,2) = 8.00 (right), (1,3) = 10.00 (right),
-and (2,3) = 5.21 (up). The handwritten work must show all four
-action calculations at each requested position, including ice probabilities.
+The Markov Decision Process (MDP) consists of:
+
+- States: All grid cells except the wall.
+- Actions: Up, Right, Down, Left.
+- Transitions: Deterministic movement on normal tiles and
+  probabilistic movement on ice.
+- Rewards: -1 for normal floor, -3 for mud,
+  +10 for the goal, and -10 for the hole.
+- Discount factor: gamma = 0.9.
+
+The agent's goal is to maximize the expected
+discounted reward.
+
+### 2. Value Iteration
+
+The Bellman optimality update is:
+
+$$
+V_{k+1}(s) =
+\max_a \sum_{s'} P(s'|s,a)
+[R(s,a,s') + 0.9V_k(s')]
+$$
+
+The initial values are V0 = 0.
+
+### 3. Handwritten Calculations
+
+The following photographs show my calculations
+for V1, V2, and the best actions.
+
+**Page 1 — MDP and initial calculations**
+
+![Part A Page 1](<WhatsApp Image 2026-11-16 at 11.26.23 PM.jpg>)
+
+**Page 2 — Value Iteration calculations**
+
+![Part A Page 2](<WhatsApp Image 2026-11-16 at 11.27.07 PM.jpg>)
+
+**Page 3 — Final calculations and best actions**
+
+![Part A Page 3](<WhatsApp Image 2026-11-16 at 11.28.06 PM.jpg>)
+
+### 4. V2 Results
+
+| Position | V2 | Best Action |
+|---|---:|---|
+| (1,2) Mud | 8.00 | Right |
+| (1,3) Floor | 10.00 | Right |
+| (2,3) Ice | 5.21 | Up |
+
+The calculations use V1 values for all V2 updates.
+
+At the ice tile, movement probabilities are
+0.8 for the intended direction and 0.1
+for each perpendicular direction.
+
+There are no tied best actions at these positions.
+
+### 5. Conclusion
+
+The first two value iteration rounds show
+how expected rewards influence the best actions.
+
+However, two iterations are not enough to prove
+that the policy is optimal.
+
+More iterations are needed until the values converge.
+
 
 ## Part B — FrozenLake simulations
 
