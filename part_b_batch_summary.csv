@@ -1,0 +1,13 @@
+Slippery?,Policy,Batch seed,Goals /50,Holes /50,Time limits /50,Success %,Mean steps
+False,fixed,11,50,0,0,100.0,6.0
+False,fixed,22,50,0,0,100.0,6.0
+False,fixed,33,50,0,0,100.0,6.0
+False,random,11,0,50,0,0.0,7.98
+False,random,22,0,50,0,0.0,6.42
+False,random,33,1,49,0,2.0,6.66
+True,fixed,11,3,47,0,6.0,4.52
+True,fixed,22,2,48,0,4.0,5.06
+True,fixed,33,0,50,0,0.0,4.06
+True,random,11,0,50,0,0.0,8.3
+True,random,22,2,48,0,4.0,7.76
+True,random,33,0,50,0,0.0,6.74

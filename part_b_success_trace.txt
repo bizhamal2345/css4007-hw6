@@ -1,0 +1,57 @@
+Start: seed=33006, slippery=False, policy=random
+
+[41mS[0mFFF
+FHFH
+FFFH
+HFFG
+
+Step 1: state=0, action=LEFT, next_state=0, reward=0, terminated=False, truncated=False
+  (Left)
+[41mS[0mFFF
+FHFH
+FFFH
+HFFG
+
+Step 2: state=0, action=DOWN, next_state=4, reward=0, terminated=False, truncated=False
+  (Down)
+SFFF
+[41mF[0mHFH
+FFFH
+HFFG
+
+Step 3: state=4, action=DOWN, next_state=8, reward=0, terminated=False, truncated=False
+  (Down)
+SFFF
+FHFH
+[41mF[0mFFH
+HFFG
+
+Step 4: state=8, action=RIGHT, next_state=9, reward=0, terminated=False, truncated=False
+  (Right)
+SFFF
+FHFH
+F[41mF[0mFH
+HFFG
+
+Step 5: state=9, action=DOWN, next_state=13, reward=0, terminated=False, truncated=False
+  (Down)
+SFFF
+FHFH
+FFFH
+H[41mF[0mFG
+
+Step 6: state=13, action=RIGHT, next_state=14, reward=0, terminated=False, truncated=False
+  (Right)
+SFFF
+FHFH
+FFFH
+HF[41mF[0mG
+
+Step 7: state=14, action=RIGHT, next_state=15, reward=1, terminated=True, truncated=False
+  (Right)
+SFFF
+FHFH
+FFFH
+HFF[41mG[0m
+
+FINAL: goal, steps=7, total_reward=1.0

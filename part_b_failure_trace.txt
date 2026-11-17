@@ -1,0 +1,29 @@
+Start: seed=11000, slippery=False, policy=random
+
+[41mS[0mFFF
+FHFH
+FFFH
+HFFG
+
+Step 1: state=0, action=UP, next_state=0, reward=0, terminated=False, truncated=False
+  (Up)
+[41mS[0mFFF
+FHFH
+FFFH
+HFFG
+
+Step 2: state=0, action=RIGHT, next_state=1, reward=0, terminated=False, truncated=False
+  (Right)
+S[41mF[0mFF
+FHFH
+FFFH
+HFFG
+
+Step 3: state=1, action=DOWN, next_state=5, reward=0, terminated=True, truncated=False
+  (Down)
+SFFF
+F[41mH[0mFH
+FFFH
+HFFG
+
+FINAL: hole, steps=3, total_reward=0.0
