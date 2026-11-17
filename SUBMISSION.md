@@ -109,11 +109,19 @@ that the policy is optimal.
 More iterations are needed until the values converge.
 
 
-## Part B — FrozenLake simulations
 
-### Environment and goal
+## Part B — FrozenLake Simulations
 
-I used `FrozenLake-v1` with `map_name="4x4"`, default rewards, and the layout:
+### 1. Environment and Goal
+
+I used the Gymnasium FrozenLake-v1 environment with
+a 4×4 map.
+
+The goal is to move the agent from the starting
+position (S) to the goal (G) without falling
+into a hole (H).
+
+The map is:
 
 ```text
 S F F F
@@ -122,94 +130,157 @@ F F F H
 H F F G
 ```
 
-`S` is the start, `F` safe frozen floor, `H` a hole and `G` the goal.
-A goal gives reward 1; other transitions give reward 0. I did **not** change
-FrozenLake's default rewards or slipping probabilities. Each episode is stopped
-on `terminated`, `truncated`, or the 100-step limit; if the 100th step reaches
-G/H, the terminal outcome is recorded before the time limit.
+S = Start  
+F = Frozen floor  
+H = Hole  
+G = Goal
 
-### Fixed policy, selected before experiments
+The goal reward is 1. All other rewards are 0.
 
-The fixed state-dependent policy uses one action for every nonterminal state.
-The directions below are the same throughout all experiments; they are not trained.
+### 2. Policies
+
+I compared two policies:
+
+**Random Policy**
+
+The agent chooses one of four actions randomly:
+left, down, right, or up.
+
+**Fixed Policy**
+
+The agent follows a predefined action for each state.
+
+The fixed policy is:
 
 ```text
-↓  →  ↓  ←
-↓  H  ↓  H
-→  →  ↓  H
-H  →  →  G
+↓ → ↓ ←
+↓ H ↓ H
+→ → ↓ H
+H → → G
 ```
 
-State-to-action mapping (Gymnasium: 0=left, 1=down, 2=right, 3=up):
+The fixed policy was selected before running
+the experiments. It does not learn or change.
 
-| State | 0 | 1 | 2 | 3 | 4 | 6 | 8 | 9 | 10 | 13 | 14 |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Action | down | right | down | left | down | down | right | right | down | right | right |
+### 3. Experimental Setup
 
-On the non-slippery map, the fixed policy follows a safe route
-`0 → 4 → 8 → 9 → 10 → 14 → 15` (goal). On slippery ice, a requested
-move can have a different outcome; the policy itself remains unchanged.
-This design intentionally avoids the known hole squares (5, 7, 11, 12).
+I tested four conditions:
 
-### Simulation method
+1. Random policy, non-slippery
+2. Fixed policy, non-slippery
+3. Random policy, slippery
+4. Fixed policy, slippery
 
-I compared four conditions: random/fixed policy crossed with
-`is_slippery=False` / `is_slippery=True`.
-Each condition has three batches of 50 episodes (batch seeds 11, 22, 33),
-for **600 episodes in total**. Episode `i` uses reset seed
-`1000 * batch_seed + i`, `i = 0..49`. Random actions also use an
-explicit NumPy random generator initialized with the episode seed.
-The same list of episode seeds is reused in all four conditions.
+Each condition was tested using three batches,
+with random seeds 11, 22, and 33.
 
-- **Random policy:** samples one of the four actions with equal probability.
-- **Fixed policy:** looks up the chosen action for the current state; no learning.
+Each batch contained 50 episodes.
 
-### Batch results
+Total number of episodes:
 
-**Part B measurements pending:** run `python hw6_part_b.py`, then `python build_hw6_submission.py` to fill the table automatically. No unobserved values are reported as results.
+2 policies × 2 slippery settings × 3 batches
+× 50 episodes = 600 episodes.
 
-| Slippery? | Policy | Batch seed | Goals /50 | Holes /50 | Time limits /50 | Success % | Mean steps |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| False | random | 11 | — | — | — | — | — |
-| False | random | 22 | — | — | — | — | — |
-| False | random | 33 | — | — | — | — | — |
-| False | fixed | 11 | — | — | — | — | — |
-| False | fixed | 22 | — | — | — | — | — |
-| False | fixed | 33 | — | — | — | — | — |
-| True | random | 11 | — | — | — | — | — |
-| True | random | 22 | — | — | — | — | — |
-| True | random | 33 | — | — | — | — | — |
-| True | fixed | 11 | — | — | — | — | — |
-| True | fixed | 22 | — | — | — | — | — |
-| True | fixed | 33 | — | — | — | — | — |
+The maximum episode length was 100 steps.
 
-### Interpretation
+When is_slippery=False, the agent moves
+in the selected direction.
 
-- Compare goal counts, time limits, and mean steps after the actual batch results are generated.
+When is_slippery=True, the movement is stochastic.
 
-When `is_slippery=False`, the chosen action is executed as requested.
-When `is_slippery=True`, FrozenLake can move in a different direction,
-which introduces transition uncertainty and can cause falls into holes.
-The difference between the three batches measures sampling variability.
-A single successful episode is insufficient to estimate a policy's success rate:
-many independent episodes and repeated batches provide stronger evidence.
 
-These runs are **not training**: neither the random policy nor the fixed
-policy is updated from the reward, and the fixed state-to-action mapping
-remains constant. The simulations evaluate policies rather than improve them.
+### 4. Experimental Results
 
-### Saved evidence
+I ran 600 episodes in total, using three batches
+of 50 episodes for each experimental condition.
 
-- [All 600 episode rows](outputs/part_b_episodes.csv)
-- [12-batch summary](outputs/part_b_batch_summary.csv)
-- [Fixed policy before experiments](outputs/part_b_fixed_policy.json)
-- [Successful episode trace](outputs/part_b_success_trace.txt)
-- [Failed episode trace](outputs/part_b_failure_trace.txt)
-- [Success-rate chart](outputs/part_b_success_rates.png)
-- [Runtime versions](outputs/part_b_versions.json)
+| Slippery? | Policy | Seed | Goals /50 | Holes /50 | Time limits /50 | Success % | Mean steps |
+|---|---|---:|---:|---:|---:|---:|---:|
+| False | random | 11 | 0 | 50 | 0 | 0.0 | 7.98 |
+| False | random | 22 | 0 | 50 | 0 | 0.0 | 6.42 |
+| False | random | 33 | 1 | 49 | 0 | 2.0 | 6.66 |
+| False | fixed | 11 | 50 | 0 | 0 | 100.0 | 6.00 |
+| False | fixed | 22 | 50 | 0 | 0 | 100.0 | 6.00 |
+| False | fixed | 33 | 50 | 0 | 0 | 100.0 | 6.00 |
+| True | random | 11 | 0 | 50 | 0 | 0.0 | 8.30 |
+| True | random | 22 | 2 | 48 | 0 | 4.0 | 7.76 |
+| True | random | 33 | 0 | 50 | 0 | 0.0 | 6.74 |
+| True | fixed | 11 | 3 | 47 | 0 | 6.0 | 4.52 |
+| True | fixed | 22 | 2 | 48 | 0 | 4.0 | 5.06 |
+| True | fixed | 33 | 0 | 50 | 0 | 0.0 | 4.06 |
 
-If no successful or failed episode occurred in the observed batches, the
-corresponding trace is not required and this should be stated explicitly.
+The complete results are available in
+[part_b_batch_summary.csv](part_b_batch_summary.csv).
+
+### 5. Results Interpretation
+
+The fixed policy achieved a 100% success rate
+in the non-slippery environment.
+
+The random policy performed poorly because
+it selected actions without following a safe route.
+
+In the slippery environment, both policies had
+low success rates because the agent could move
+in an unintended direction and fall into holes.
+
+These results show that movement uncertainty
+can strongly affect policy performance.
+
+### 6. Success Rate Graph
+
+![FrozenLake Success Rates](part_b_success_rates.png)
+
+
+### 6. Interpretation
+
+The random policy selects actions without
+considering the goal or the holes.
+
+The fixed policy follows predefined directions
+to reach the goal.
+
+In the non-slippery environment, the fixed
+policy follows a safe route to the goal.
+
+In the slippery environment, the agent may
+move in an unintended direction. This makes
+the outcome uncertain.
+
+Repeating the experiments with different seeds
+helps us observe the effect of randomness.
+
+These experiments evaluate the policies.
+They do not train the agent.
+
+### 7. Saved Files
+
+The following files contain the code,
+experimental results, and evidence.
+
+- [Python implementation](hw6_part_b.py)
+- [All 600 episodes](part_b_episodes.csv)
+- [Summary of 12 batches](part_b_batch_summary.csv)
+- [Success rate graph](part_b_success_rates.png)
+- [Fixed policy](part_b_fixed_policy.json)
+- [Successful episode trace](part_b_success_trace.txt)
+- [Failed episode trace](part_b_failure_trace.txt)
+- [Library versions](part_b_versions.json)
+
+### 8. Conclusion
+
+In this experiment, I compared a random policy
+and a fixed policy in the FrozenLake environment.
+
+I tested both policies under slippery and
+non-slippery conditions.
+
+I used 600 episodes in total and recorded
+successes, failures, time limits, and steps.
+
+This experiment demonstrates how a predefined
+policy and uncertainty in movement affect
+the agent's performance.
 
 ## Part C — Custom Grid World Solver
 
